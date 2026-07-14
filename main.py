@@ -43,7 +43,15 @@ def update_game(gameupdate: GameUpdate,game_id: int,db: Session = Depends(get_db
         "message": "Cập nhật thành công",
         "data": game
     }
-    
+
+@app.get("/games/search",response_model=list[GameResponse],status_code=status.HTTP_200_OK)
+def search_game(genre: str,db: Session = Depends(get_db)):
+    return s_search_game(genre,db)
+ 
+@app.get("/games/filter",response_model=list[GameResponse],status_code=status.HTTP_200_OK)
+def filter_game(developer: str,db: Session = Depends(get_db)):
+    return s_filter_game(developer,db)
+
 @app.delete("/games/{game_id}",response_model=GameResponse,status_code=status.HTTP_200_OK)
 def delete_game(game_id: int,db: Session = Depends(get_db)):
     game = s_delete_game(game_id,db)

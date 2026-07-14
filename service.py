@@ -46,6 +46,14 @@ def s_update_game(gameupdate: GameUpdate,game_id,db: Session):
     db.refresh(game)
     return game
 
+def s_filter_game(developer,db: Session):
+    games = db.query(GamestoreModel).all()
+    return [game for game in games if developer.lower() in game.developer.lower()]
+
+def s_search_game(genre: str,db: Session):
+    games = db.query(GamestoreModel).all()
+    return [game for game in games if genre.lower() in game.genre.lower()]
+
 def s_delete_game(game_id,db: Session):
     game = db.query(GamestoreModel).filter(GamestoreModel.id == game_id).first()
     if game is None:
